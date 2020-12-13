@@ -5,6 +5,23 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Models
 {
+    public class NewTicketEntity
+    {
+        public string Region { get; set; }
+        public string District { get; set; }
+        public string Shops { get; set; }
+        public int assingedTo { get; set; }
+        public string Ticketseverity { get; set; }
+        public int Ticketstatus { get; set; }
+        public string short_desc { get; set; }
+        public int product { get; set; }
+        public int reporter { get; set; }
+        public int component_id { get; set; }
+        public bool everconfirmed { get; set; }
+        public bool reporter_accessible { get; set; }
+        public bool cclist_accessible { get; set; }
+    }
+
     public class NMSEntity
     {
         public string RCode { get; set; }
