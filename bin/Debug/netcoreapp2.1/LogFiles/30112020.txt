@@ -1,0 +1,28 @@
+11/30/2020 3:28:46 PM : Cannot add or update a child row: a foreign key constraint fails (`tncscbug`.`nms_data`, CONSTRAINT `fk_nms_rcode` FOREIGN KEY (`rcode`) REFERENCES `region_master` (`REGNCODE`) ON DELETE NO ACTION ON UPDATE NO ACTION) :    at MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   at MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   at WebApplication1.Controllers.NMSDataController.Post(NMSEntity nmsEntity) in C:\LocalRepository\EMS\WebApplication1\WebApplication1\Controllers\NMSDataController.cs:line 56
+11/30/2020 3:30:11 PM : Cannot add or update a child row: a foreign key constraint fails (`tncscbug`.`nms_data`, CONSTRAINT `fk_nms_rcode` FOREIGN KEY (`rcode`) REFERENCES `region_master` (`REGNCODE`) ON DELETE NO ACTION ON UPDATE NO ACTION) :    at MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   at MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   at WebApplication1.Controllers.NMSDataController.Post(NMSEntity nmsEntity) in C:\LocalRepository\EMS\WebApplication1\WebApplication1\Controllers\NMSDataController.cs:line 56
+11/30/2020 5:39:38 PM : Cannot add or update a child row: a foreign key constraint fails (`tncscbug`.`nms_data`, CONSTRAINT `fk_nms_rcode` FOREIGN KEY (`rcode`) REFERENCES `region_master` (`REGNCODE`) ON DELETE NO ACTION ON UPDATE NO ACTION) :    at MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   at MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   at WebApplication1.Controllers.NMSDataController.Post(NMSEntity nmsEntity) in C:\LocalRepository\EMS\WebApplication1\WebApplication1\Controllers\NMSDataController.cs:line 57
+11/30/2020 5:55:19 PM : Cannot add or update a child row: a foreign key constraint fails (`tncscbug`.`nms_data`, CONSTRAINT `fk_nms_rcode` FOREIGN KEY (`rcode`) REFERENCES `region_master` (`REGNCODE`) ON DELETE NO ACTION ON UPDATE NO ACTION) :    at MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   at MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   at WebApplication1.Controllers.NMSDataController.Post(NMSEntity nmsEntity) in C:\LocalRepository\EMS\WebApplication1\WebApplication1\Controllers\NMSDataController.cs:line 57
