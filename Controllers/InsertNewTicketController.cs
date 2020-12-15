@@ -17,11 +17,10 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class InsertNewTicketController : ControllerBase
     {
-            MySqlCommand cmd = new MySqlCommand();
-
             [HttpPost("{id}")]
             public Tuple<bool, string> Post(NewTicketEntity ticketEntity)
             {
+                MySqlCommand cmd = new MySqlCommand();
                 //  ManageSQLConnection sqlConnection = new ManageSQLConnection();
                 MySqlConnection sqlConnection = new MySqlConnection();
                 MySqlTransaction objTrans = null;
@@ -52,10 +51,14 @@ namespace WebApplication1.Controllers
                         cmd.Parameters.AddWithValue("@product", ticketEntity.product);
                         cmd.Parameters.AddWithValue("@reporter", ticketEntity.reporter);
                         cmd.Parameters.AddWithValue("@component_id", ticketEntity.component_id);
+                        cmd.Parameters.AddWithValue("@URL", ticketEntity.URL);
                         cmd.Parameters.AddWithValue("@everconfirmed", ticketEntity.everconfirmed);
                         cmd.Parameters.AddWithValue("@reporter_accessible", ticketEntity.reporter_accessible);
                         cmd.Parameters.AddWithValue("@cclist_accessible", ticketEntity.cclist_accessible);
+                        cmd.Parameters.AddWithValue("@ticket_id", ticketEntity.ticket_id).Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
+                        string id = cmd.Parameters["@ticket_id"].Value.ToString();
+                        //LblMessage.Text = "Record inserted successfully. ID = " + id;
                         objTrans.Commit();
                         cmd.Parameters.Clear();
                         cmd.Dispose();

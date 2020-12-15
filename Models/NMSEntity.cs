@@ -12,14 +12,24 @@ namespace WebApplication1.Models
         public string Shops { get; set; }
         public int assingedTo { get; set; }
         public string Ticketseverity { get; set; }
-        public int Ticketstatus { get; set; }
+        public string Ticketstatus { get; set; }
         public string short_desc { get; set; }
         public int product { get; set; }
-        public int reporter { get; set; }
+        public string reporter { get; set; }
         public int component_id { get; set; }
         public bool everconfirmed { get; set; }
         public bool reporter_accessible { get; set; }
         public bool cclist_accessible { get; set; }
+        public string URL { get; set; }
+        public int ticket_id { get; set; }
+
+    }
+
+    public class TicketDescription
+    {
+        public string ticketID { get; set; }
+        public string reporter { get; set; }
+        public string ticketdescription { get; set; }
     }
 
     public class NMSEntity
