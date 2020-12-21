@@ -38,7 +38,13 @@ namespace WebApplication1.Controllers
                     objTrans = sqlConnection.BeginTransaction();
                     cmd.Transaction = objTrans;
                     cmd.Connection = sqlConnection;
-                    cmd.CommandText = "TicketDescription";
+                    if (descriptionEntity.Type == 1)
+                    {
+                        cmd.CommandText = "TicketDescription";
+                    } else
+                    {
+                        cmd.CommandText = "TicketDescription";
+                    }
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@ticketID", descriptionEntity.ticketID);
                     cmd.Parameters.AddWithValue("@reporter", descriptionEntity.reporter);

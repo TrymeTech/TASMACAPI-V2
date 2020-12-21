@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers
     public class InsertNewTicketController : ControllerBase
     {
             [HttpPost("{id}")]
-            public Tuple<bool, string> Post(NewTicketEntity ticketEntity)
+            public Tuple<bool, string, string> Post(NewTicketEntity ticketEntity)
             {
                 MySqlCommand cmd = new MySqlCommand();
                 //  ManageSQLConnection sqlConnection = new ManageSQLConnection();
@@ -55,20 +55,21 @@ namespace WebApplication1.Controllers
                         cmd.Parameters.AddWithValue("@everconfirmed", ticketEntity.everconfirmed);
                         cmd.Parameters.AddWithValue("@reporter_accessible", ticketEntity.reporter_accessible);
                         cmd.Parameters.AddWithValue("@cclist_accessible", ticketEntity.cclist_accessible);
-                        cmd.Parameters.AddWithValue("@ticket_id", ticketEntity.ticket_id).Direction = ParameterDirection.Output;
-                        cmd.ExecuteNonQuery();
-                        string id = cmd.Parameters["@ticket_id"].Value.ToString();
+                        //cmd.Parameters.AddWithValue("@ticket_id", ticketEntity.ticket_id).Direction = ParameterDirection.Output;
+                        //string id = cmd.Parameters["@ticket_id"].Value.ToString();
                         //LblMessage.Text = "Record inserted successfully. ID = " + id;
+                        int insertedID = Convert.ToInt32(cmd.ExecuteScalar());
+                        string insertID = insertedID.ToString();
                         objTrans.Commit();
                         cmd.Parameters.Clear();
                         cmd.Dispose();
-                        return new Tuple<bool, string>(true, JsonConvert.SerializeObject(ds));
+                        return new Tuple<bool, string, string>(true, JsonConvert.SerializeObject(ds),insertID);
                     }
                     catch (Exception ex)
                     {
                         AuditLog.WriteError(ex.Message + " : " + ex.StackTrace);
                         objTrans.Rollback();
-                        return new Tuple<bool, string>(false, "Exception occured");
+                        return new Tuple<bool, string, string>(false, "Exception occured","No value return");
                     }
                     finally
                     {
@@ -80,7 +81,7 @@ namespace WebApplication1.Controllers
             }
 
             [HttpGet("{id}")]
-            public string Get(string FDate, string TDate, string RCode, string DCode, string Product, string Comopnent)
+            public string Get(string FDate, string TDate, string RCode, string DCode, string Product, string Component, string Shops)
             {
                 // SQLConnection sqlConnection = new SQLConnection();
                 ManageSQLConnection sqlConnection = new ManageSQLConnection();
@@ -91,7 +92,8 @@ namespace WebApplication1.Controllers
                     sqlParameters.Add(new KeyValuePair<string, string>("@RCode", RCode));
                     sqlParameters.Add(new KeyValuePair<string, string>("@DCode", DCode));
                     sqlParameters.Add(new KeyValuePair<string, string>("@Product", Product));
-                    sqlParameters.Add(new KeyValuePair<string, string>("@Comopnent", Comopnent));
+                    sqlParameters.Add(new KeyValuePair<string, string>("@Component", Component));
+                    sqlParameters.Add(new KeyValuePair<string, string>("@Shops", Shops));
                     sqlParameters.Add(new KeyValuePair<string, string>("@fromdate", FDate));
                     sqlParameters.Add(new KeyValuePair<string, string>("@todate", TDate));
                     ds = sqlConnection.GetDataSetValues("GetTickets", sqlParameters);
