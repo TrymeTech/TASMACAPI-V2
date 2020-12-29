@@ -13335,11 +13335,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\LocalRepository\\EMS\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+      "projectUniqueName": "C:\\LocalRepository\\EMS\\WebAPI\\TASMACAPI\\WebApplication1.csproj",
       "projectName": "WebApplication1",
-      "projectPath": "C:\\LocalRepository\\EMS\\WebApplication1\\WebApplication1\\WebApplication1.csproj",
+      "projectPath": "C:\\LocalRepository\\EMS\\WebAPI\\TASMACAPI\\WebApplication1.csproj",
       "packagesPath": "C:\\Users\\dulasi\\.nuget\\packages\\",
-      "outputPath": "C:\\LocalRepository\\EMS\\WebApplication1\\WebApplication1\\obj\\",
+      "outputPath": "C:\\LocalRepository\\EMS\\WebAPI\\TASMACAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
