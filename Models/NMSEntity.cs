@@ -10,7 +10,7 @@ namespace WebApplication1.Models
         public string Region { get; set; }
         public string District { get; set; }
         public string Shops { get; set; }
-        public int assingedTo { get; set; }
+        public string assingedTo { get; set; }
         public string Ticketseverity { get; set; }
         public string Ticketstatus { get; set; }
         public string short_desc { get; set; }
@@ -21,6 +21,7 @@ namespace WebApplication1.Models
         public bool reporter_accessible { get; set; }
         public bool cclist_accessible { get; set; }
         public string URL { get; set; }
+        public string CC { get; set; }
         public int ticket_id { get; set; }
 
     }
@@ -30,6 +31,7 @@ namespace WebApplication1.Models
         public string ticketID { get; set; }
         public string reporter { get; set; }
         public string ticketdescription { get; set; }
+        public string Status { get; set; }
     }
 
     public class NMSEntity

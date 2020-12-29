@@ -9,6 +9,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using TNCSCAPI;
 using WebApplication1.Models;
+using WebApplication1.SQLConnection;
 
 namespace WebApplication1.Controllers
 {
@@ -38,17 +39,12 @@ namespace WebApplication1.Controllers
                     objTrans = sqlConnection.BeginTransaction();
                     cmd.Transaction = objTrans;
                     cmd.Connection = sqlConnection;
-                    if (descriptionEntity.Type == 1)
-                    {
-                        cmd.CommandText = "TicketDescription";
-                    } else
-                    {
-                        cmd.CommandText = "TicketDescription";
-                    }
+                    cmd.CommandText = "TicketDescription";
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@ticketID", descriptionEntity.ticketID);
                     cmd.Parameters.AddWithValue("@reporter", descriptionEntity.reporter);
                     cmd.Parameters.AddWithValue("@ticketdescription", descriptionEntity.ticketdescription);
+                    cmd.Parameters.AddWithValue("@Status", descriptionEntity.Status);
                     cmd.ExecuteNonQuery();
                     objTrans.Commit();
                     cmd.Parameters.Clear();
@@ -67,6 +63,35 @@ namespace WebApplication1.Controllers
                     cmd.Dispose();
                     ds.Dispose();
                 }
+            }
+        }
+        [HttpGet("{id}")]
+        public string Get(string TicketID, string UserName)
+        {
+            // SQLConnection sqlConnection = new SQLConnection();
+            ManageSQLConnection sqlConnection = new ManageSQLConnection();
+            DataSet ds = new DataSet();
+            try
+            {
+                List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
+                if(TicketID == "A")
+                {
+                     sqlParameters.Add(new KeyValuePair<string, string>("@UserName", UserName));
+                     ds = sqlConnection.GetDataSetValues("GetMyTicket", sqlParameters);
+                } else if(TicketID == "TD")
+                {
+                    sqlParameters.Add(new KeyValuePair<string, string>("@UserName", UserName));
+                    ds = sqlConnection.GetDataSetValues("GetTicketDescription", sqlParameters);
+                } else
+                {
+                    sqlParameters.Add(new KeyValuePair<string, string>("@TicketID", TicketID));
+                    ds = sqlConnection.GetDataSetValues("ticketbyid", sqlParameters);
+                }
+                return JsonConvert.SerializeObject(ds.Tables[0]);
+            }
+            finally
+            {
+                ds.Dispose();
             }
         }
     }

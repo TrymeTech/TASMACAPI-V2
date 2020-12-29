@@ -52,6 +52,7 @@ namespace WebApplication1.Controllers
                         cmd.Parameters.AddWithValue("@reporter", ticketEntity.reporter);
                         cmd.Parameters.AddWithValue("@component_id", ticketEntity.component_id);
                         cmd.Parameters.AddWithValue("@URL", ticketEntity.URL);
+                        cmd.Parameters.AddWithValue("@CC", ticketEntity.CC);
                         cmd.Parameters.AddWithValue("@everconfirmed", ticketEntity.everconfirmed);
                         cmd.Parameters.AddWithValue("@reporter_accessible", ticketEntity.reporter_accessible);
                         cmd.Parameters.AddWithValue("@cclist_accessible", ticketEntity.cclist_accessible);
@@ -110,9 +111,13 @@ namespace WebApplication1.Controllers
             {
                 ManageSQLConnection manageSQLConnection = new ManageSQLConnection();
                 List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
-                sqlParameters.Add(new KeyValuePair<string, string>("@ID", (entity.product).ToString()));
-                sqlParameters.Add(new KeyValuePair<string, string>("@ClosedDate", entity.Region));
-                return manageSQLConnection.UpdateValues("GetMyTickets", sqlParameters);
+                sqlParameters.Add(new KeyValuePair<string, string>("@TicketID", (entity.ticket_id).ToString()));
+                sqlParameters.Add(new KeyValuePair<string, string>("@assingedTo", (entity.assingedTo).ToString()));
+                sqlParameters.Add(new KeyValuePair<string, string>("@Ticketstatus", entity.Ticketstatus));
+                sqlParameters.Add(new KeyValuePair<string, string>("@short_desc", entity.short_desc));
+                sqlParameters.Add(new KeyValuePair<string, string>("@URL", entity.URL));
+                sqlParameters.Add(new KeyValuePair<string, string>("@CC", entity.CC));
+                return manageSQLConnection.UpdateValues("UpdateTickets", sqlParameters);
             }
 
         }
