@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
-using TNCSCAPI;
 using WebApplication1.Models;
 using WebApplication1.SQLConnection;
 
@@ -24,7 +23,7 @@ namespace WebApplication1.Controllers
             //  ManageSQLConnection sqlConnection = new ManageSQLConnection();
             MySqlConnection sqlConnection = new MySqlConnection();
             MySqlTransaction objTrans = null;
-            string connectionString = "Server=127.0.0.1;Database=tncscbug;Uid=root;Pwd=54321;";
+            string connectionString = GlobalVariables.ConnectionString; 
             using (sqlConnection = new MySqlConnection(connectionString))
             {
                 DataSet ds = new DataSet();

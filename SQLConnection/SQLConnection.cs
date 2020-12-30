@@ -10,7 +10,7 @@ namespace WebApplication1.SQLConnection
     public class ManageSQLConnection
     {
         private MySqlConnection connection;
-        string connectionString = "Server=127.0.0.1;Database=tncscbug;Uid=root;Pwd=54321;";
+        string connectionString = GlobalVariables.ConnectionString;
         MySqlDataAdapter dataAdapter;
 
         //open connection to database
