@@ -47,7 +47,7 @@ namespace WebApplication1.Controllers
                     cmd.Parameters.AddWithValue("@product", ticketEntity.product);
                     cmd.Parameters.AddWithValue("@reporter", ticketEntity.reporter);
                     cmd.Parameters.AddWithValue("@component_id", ticketEntity.component_id);
-                    cmd.Parameters.AddWithValue("@URL", ticketEntity.URL);
+                  //  cmd.Parameters.AddWithValue("@URL", ticketEntity.URL);
                     cmd.Parameters.AddWithValue("@CC", ticketEntity.CC);
                     cmd.Parameters.AddWithValue("@everconfirmed", ticketEntity.everconfirmed);
                     cmd.Parameters.AddWithValue("@reporter_accessible", ticketEntity.reporter_accessible);
@@ -78,22 +78,31 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{id}")]
-        public string Get(string FDate, string TDate, string RCode, string DCode, string Product, string Component, string Shops)
+        public string Get(string FDate, string TDate, string RCode, string DCode, 
+            string Product, string Component, string Shops, int type)
         {
             // SQLConnection sqlConnection = new SQLConnection();
             ManageSQLConnection sqlConnection = new ManageSQLConnection();
             DataSet ds = new DataSet();
+            string procedureName = string.Empty;
             try
             {
                 List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
-                sqlParameters.Add(new KeyValuePair<string, string>("@RCode", RCode));
-                sqlParameters.Add(new KeyValuePair<string, string>("@DCode", DCode));
-                sqlParameters.Add(new KeyValuePair<string, string>("@Product", Product));
-                sqlParameters.Add(new KeyValuePair<string, string>("@Component", Component));
-                sqlParameters.Add(new KeyValuePair<string, string>("@Shops", Shops));
                 sqlParameters.Add(new KeyValuePair<string, string>("@fromdate", FDate));
                 sqlParameters.Add(new KeyValuePair<string, string>("@todate", TDate));
-                ds = sqlConnection.GetDataSetValues("GetTickets", sqlParameters);
+                if(type == 1)
+                {
+                    procedureName = "GetTicketsByDate";
+                } else
+                {
+                    sqlParameters.Add(new KeyValuePair<string, string>("@RCode", RCode));
+                    sqlParameters.Add(new KeyValuePair<string, string>("@DCode", DCode));
+                    sqlParameters.Add(new KeyValuePair<string, string>("@Product", Product));
+                    sqlParameters.Add(new KeyValuePair<string, string>("@Component", Component));
+                    sqlParameters.Add(new KeyValuePair<string, string>("@Shops", Shops));
+                    procedureName = "GetTickets";
+                }
+                ds = sqlConnection.GetDataSetValues(procedureName, sqlParameters);
                 return JsonConvert.SerializeObject(ds.Tables[0]);
             }
             finally
