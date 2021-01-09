@@ -133,7 +133,7 @@ namespace WebApplication1.Mail
         public string FromPassword { get; set; }
         public string ToMailid { get; set; }
         public string ToCC { get; set; }
-        public int Port { get; set; }
+           public int Port { get; set; }
         public string Subject { get; set; }
         public string BodyMessage { get; set; }
         public string SMTP { get; set; }
@@ -151,6 +151,5 @@ namespace WebApplication1.Mail
         public string Status { get; set; }
         public string Subject { get; set; }
         public string TicketDescription { get; set; }
-
     }
 }

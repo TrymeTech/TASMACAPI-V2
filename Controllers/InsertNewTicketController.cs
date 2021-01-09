@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using WebApplication1.Mail;
 using WebApplication1.Models;
 using WebApplication1.SQLConnection;
 
@@ -47,7 +48,7 @@ namespace WebApplication1.Controllers
                     cmd.Parameters.AddWithValue("@product", ticketEntity.product);
                     cmd.Parameters.AddWithValue("@reporter", ticketEntity.reporter);
                     cmd.Parameters.AddWithValue("@component_id", ticketEntity.component_id);
-                  //  cmd.Parameters.AddWithValue("@URL", ticketEntity.URL);
+                    //  cmd.Parameters.AddWithValue("@URL", ticketEntity.URL);
                     cmd.Parameters.AddWithValue("@CC", ticketEntity.CC);
                     cmd.Parameters.AddWithValue("@everconfirmed", ticketEntity.everconfirmed);
                     cmd.Parameters.AddWithValue("@reporter_accessible", ticketEntity.reporter_accessible);
@@ -60,6 +61,21 @@ namespace WebApplication1.Controllers
                     objTrans.Commit();
                     cmd.Parameters.Clear();
                     cmd.Dispose();
+
+                    MailSending mailSending = new MailSending();
+                    //Mail sending
+                    MailEntity mailEntity = new MailEntity
+                    {
+                        FromMailid = GlobalVariables.FromMailid,
+                        FromPassword = GlobalVariables.Password,
+                        ToMailid = ticketEntity.assingedTo,
+                        ToCC = ticketEntity.CC,
+                        Port = GlobalVariables.Port,
+                        Subject = ticketEntity.short_desc,
+                        BodyMessage = mailSending.BodyMessage(ticketEntity.bodyMessage),
+                        SMTP = GlobalVariables.Host
+                    };
+                    mailSending.Send(mailEntity);
                     return new Tuple<bool, string, string>(true, JsonConvert.SerializeObject(ds), insertID);
                 }
                 catch (Exception ex)
@@ -78,7 +94,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{id}")]
-        public string Get(string FDate, string TDate, string RCode, string DCode, 
+        public string Get(string FDate, string TDate, string RCode, string DCode,
             string Product, string Component, string Shops, int type)
         {
             // SQLConnection sqlConnection = new SQLConnection();
@@ -90,10 +106,11 @@ namespace WebApplication1.Controllers
                 List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
                 sqlParameters.Add(new KeyValuePair<string, string>("@fromdate", FDate));
                 sqlParameters.Add(new KeyValuePair<string, string>("@todate", TDate));
-                if(type == 1)
+                if (type == 1)
                 {
                     procedureName = "GetTicketsByDate";
-                } else
+                }
+                else
                 {
                     sqlParameters.Add(new KeyValuePair<string, string>("@RCode", RCode));
                     sqlParameters.Add(new KeyValuePair<string, string>("@DCode", DCode));
@@ -122,7 +139,24 @@ namespace WebApplication1.Controllers
             sqlParameters.Add(new KeyValuePair<string, string>("@short_desc", entity.short_desc));
             sqlParameters.Add(new KeyValuePair<string, string>("@URL", entity.URL));
             sqlParameters.Add(new KeyValuePair<string, string>("@CC", entity.CC));
-            return manageSQLConnection.UpdateValues("UpdateTickets", sqlParameters);
+           var result=  manageSQLConnection.UpdateValues("UpdateTickets", sqlParameters);
+
+            MailSending mailSending = new MailSending();
+            //Mail sending
+            MailEntity mailEntity = new MailEntity
+            {
+                FromMailid = GlobalVariables.FromMailid,
+                FromPassword = GlobalVariables.Password,
+                ToMailid = entity.assingedTo,
+                ToCC = entity.CC,
+                Port = GlobalVariables.Port,
+                Subject = entity.short_desc,
+                BodyMessage = mailSending.BodyMessage(entity.bodyMessage),
+                SMTP = GlobalVariables.Host
+            };
+            mailSending.Send(mailEntity);
+
+            return result;
         }
 
     }
