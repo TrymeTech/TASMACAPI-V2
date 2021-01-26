@@ -72,7 +72,7 @@ namespace WebApplication1.Controllers
                         ToCC = ticketEntity.CC,
                         Port = GlobalVariables.Port,
                         Subject = ticketEntity.short_desc,
-                        BodyMessage = mailSending.BodyMessage(ticketEntity.bodyMessage),
+                        BodyMessage = mailSending.BodyMessage(ticketEntity.bodyMessage, insertedID),
                         SMTP = GlobalVariables.Host
                     };
                     mailSending.Send(mailEntity);
@@ -137,7 +137,7 @@ namespace WebApplication1.Controllers
             sqlParameters.Add(new KeyValuePair<string, string>("@assingedTo", (entity.assingedTo).ToString()));
             sqlParameters.Add(new KeyValuePair<string, string>("@Ticketstatus", entity.Ticketstatus));
             sqlParameters.Add(new KeyValuePair<string, string>("@short_desc", entity.short_desc));
-            sqlParameters.Add(new KeyValuePair<string, string>("@URL", entity.URL));
+           // sqlParameters.Add(new KeyValuePair<string, string>("@URL", entity.URL));
             sqlParameters.Add(new KeyValuePair<string, string>("@CC", entity.CC));
            var result=  manageSQLConnection.UpdateValues("UpdateTickets", sqlParameters);
 
@@ -151,7 +151,7 @@ namespace WebApplication1.Controllers
                 ToCC = entity.CC,
                 Port = GlobalVariables.Port,
                 Subject = entity.short_desc,
-                BodyMessage = mailSending.BodyMessage(entity.bodyMessage),
+                BodyMessage = mailSending.BodyMessage(entity.bodyMessage, entity.ticket_id),
                 SMTP = GlobalVariables.Host
             };
             mailSending.Send(mailEntity);

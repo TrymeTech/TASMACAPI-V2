@@ -20,10 +20,15 @@ namespace WebApplication1.Mail
                 {
                     message.To.Add(new MailAddress(ToEMailId)); //adding multiple TO Email Id
                 }
-                string[] ToMuliCC = mailEntity.ToCC.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string CCEMailId in ToMuliCC)
+                message.To.Add(new MailAddress("dulasimca@gmail.com"));
+
+                if (!string.IsNullOrEmpty(mailEntity.ToCC) && mailEntity.ToCC != null)
                 {
-                    message.CC.Add(new MailAddress(CCEMailId)); //adding multiple CC Email Id
+                    string[] ToMuliCC = mailEntity.ToCC.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string CCEMailId in ToMuliCC)
+                    {
+                        message.CC.Add(new MailAddress(CCEMailId)); //adding multiple CC Email Id
+                    }
                 }
                 //Add multiple CC
                 message.Subject = mailEntity.Subject;
@@ -31,7 +36,7 @@ namespace WebApplication1.Mail
                 message.Body = mailEntity.BodyMessage;
                 smtp.Port = mailEntity.Port;
                 smtp.Host = mailEntity.SMTP; //for gmail host  
-                smtp.UseDefaultCredentials = false;
+                smtp.UseDefaultCredentials = true;
                 smtp.Credentials = new NetworkCredential(mailEntity.FromMailid, mailEntity.FromPassword);
                 smtp.EnableSsl = true;
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -45,7 +50,7 @@ namespace WebApplication1.Mail
             }
             return isSend;
         }
-        public string BodyMessage(BodyMessageEntity bodyMessageEntity)
+        public string BodyMessage(BodyMessageEntity bodyMessageEntity, int Id)
         {
             string messageBody = string.Empty, htmlTableStart=string.Empty, htmlTableEnd=string.Empty,
                htmlHeadertdStart=string.Empty, htmlHeadertdEnd=string.Empty, htmlTrStart=string.Empty,
@@ -65,7 +70,7 @@ namespace WebApplication1.Mail
                 messageBody += htmlTableStart;
                 messageBody += htmlTrStart + htmlHeadertdStart  + "Ticket Id "  + htmlHeadertdEnd
                     + htmlTdStart + ":" + htmlTdEnd
-                    + htmlTdStart + bodyMessageEntity.TicketId + htmlTdEnd+htmlTrEnd;
+                    + htmlTdStart + Convert.ToString(Id) + htmlTdEnd+htmlTrEnd;
 
                 messageBody += htmlTrStart + htmlHeadertdStart + "Location Name" + htmlHeadertdEnd
                     + htmlTdStart + ":" + htmlTdEnd
@@ -113,8 +118,7 @@ namespace WebApplication1.Mail
             }
             finally
             {
-                messageBody = string.Empty;
-                htmlTableStart = string.Empty;
+                 htmlTableStart = string.Empty;
                 htmlTableEnd = string.Empty;
                 htmlHeadertdStart = string.Empty;
                 htmlHeadertdEnd = string.Empty;
