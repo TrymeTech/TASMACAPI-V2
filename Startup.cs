@@ -40,7 +40,7 @@ namespace WebApplication1
                 app.UseHsts();
             }
             app.UseCors(options =>
-           options.WithOrigins("http://localhost:4200", "http://180.179.49.72:8083", "http://180.179.49.72:80", "http://180.179.49.72", "http://tncsc-scm.in", "http://localhost:443", "https://tncsc-scm.in:443", "https://www.tncsc-scm.in", "http://180.179.49.72:8085", "https://www.master.tncsc-scm.in", "https://master.tncsc-scm.in", "http://localhost:4100")
+           options.WithOrigins("http://localhost:4200", "http://180.179.49.72:8083", "http://180.179.49.72:80", "http://180.179.49.72", "http://hms.testandverification.com/ems-app", "http://hms.testandverification.com/hms-app", "http://tncsc-scm.in", "http://localhost:443", "https://tncsc-scm.in:443", "https://www.tncsc-scm.in", "http://180.179.49.72:8085", "https://www.master.tncsc-scm.in", "https://master.tncsc-scm.in", "http://localhost:4100", "http://180.179.49.72:8081")
 
         // options.WithOrigins("http://localhost:4200")
          .AllowAnyMethod()
