@@ -44,6 +44,8 @@ namespace WebApplication1.Controllers
                     cmd.Parameters.AddWithValue("@reporter", descriptionEntity.reporter);
                     cmd.Parameters.AddWithValue("@ticketdescription", descriptionEntity.ticketdescription);
                     cmd.Parameters.AddWithValue("@Status", descriptionEntity.Status);
+                    cmd.Parameters.AddWithValue("@StatusCode", descriptionEntity.StatusCode);
+                    cmd.Parameters.AddWithValue("@UserId", descriptionEntity.UserId);
                     cmd.ExecuteNonQuery();
                     objTrans.Commit();
                     cmd.Parameters.Clear();
@@ -65,7 +67,7 @@ namespace WebApplication1.Controllers
             }
         }
         [HttpGet("{id}")]
-        public string Get(string TicketID, string UserName)
+        public string Get(string TicketID, int UserId)
         {
             // SQLConnection sqlConnection = new SQLConnection();
             ManageSQLConnection sqlConnection = new ManageSQLConnection();
@@ -75,11 +77,11 @@ namespace WebApplication1.Controllers
                 List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
                 if(TicketID == "A")
                 {
-                     sqlParameters.Add(new KeyValuePair<string, string>("@UserName", UserName));
+                     sqlParameters.Add(new KeyValuePair<string, string>("@UserId", UserId.ToString()));
                      ds = sqlConnection.GetDataSetValues("GetMyTicket", sqlParameters);
                 } else if(TicketID == "TD")
                 {
-                    sqlParameters.Add(new KeyValuePair<string, string>("@UserName", UserName));
+                    sqlParameters.Add(new KeyValuePair<string, string>("@UserId", UserId.ToString()));
                     ds = sqlConnection.GetDataSetValues("GetTicketDescription", sqlParameters);
                 } else
                 {

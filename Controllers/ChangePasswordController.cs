@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication1.SQLConnection;
 
 namespace WebApplication1.Controllers
@@ -13,16 +6,21 @@ namespace WebApplication1.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ChangePasswordController : ControllerBase
-    { 
+    {
         [HttpPut("{id}")]
-        public bool Put(string UserName, string Pswd)
+        public bool Put(PsswordUpdate update)
         {
             ManageSQLConnection manageSQLConnection = new ManageSQLConnection();
-            List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
-            sqlParameters.Add(new KeyValuePair<string, string>("@UserName", UserName));
-            sqlParameters.Add(new KeyValuePair<string, string>("@Pswd", Pswd));
-            return manageSQLConnection.UpdateValues("UpdatePassword", sqlParameters);
+            string Querystring = string.Empty;
+            Querystring = "UPDATE profiles SET userpwd = '" + update.Pswd + "' WHERE userid = '" + update.UserId + "';";
+            return manageSQLConnection.UpdateValuesByQuery(Querystring);
         }
 
+    }
+    public class PsswordUpdate
+    {
+        public string UserId { get; set; }
+        public string Pswd { get; set; }
+        public string OldPswd { get; set; }
     }
 }

@@ -80,6 +80,7 @@ namespace WebApplication1.SQLConnection
 
         }
 
+
         public DataSet GetDataSetValues(string procedureName, List<KeyValuePair<string, string>> parameterList)
         {
             connection = new MySqlConnection(connectionString);
@@ -98,6 +99,45 @@ namespace WebApplication1.SQLConnection
                 {
                     cmd.Parameters.AddWithValue(keyValuePair.Key, keyValuePair.Value);
                 }
+                cmd.CommandTimeout = 180;
+                dataAdapter = new MySqlDataAdapter(cmd);
+                dataAdapter.Fill(ds);
+                return ds;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+                cmd.Dispose();
+                ds.Dispose();
+                dataAdapter = null;
+            }
+        }
+
+        /// <summary>
+        /// Query Execution for particlar query
+        /// </summary>
+        /// <param name="procedureName"></param>
+        /// <param name="parameterList"></param>
+        /// <returns></returns>
+        public DataSet GetDataSetValuesFromQuery(string QueryStringName)
+        {
+            connection = new MySqlConnection(connectionString);
+            DataSet ds = new DataSet();
+            MySqlCommand cmd = new MySqlCommand();
+            try
+            {
+                if (connection.State == 0)
+                {
+                    connection.Open();
+                }
+                cmd.Connection = connection;
+                string query = QueryStringName;
+                cmd = new MySqlCommand(query, connection);
                 cmd.CommandTimeout = 180;
                 dataAdapter = new MySqlDataAdapter(cmd);
                 dataAdapter.Fill(ds);
@@ -153,6 +193,77 @@ namespace WebApplication1.SQLConnection
                 dataAdapter = null;
             }
         }
+
+
+        public bool UpdateValuesByQuery(string Query)
+        {
+            connection = new MySqlConnection(connectionString);
+            DataSet ds = new DataSet();
+            MySqlCommand cmd = new MySqlCommand();
+            try
+            {
+                if (connection.State == 0)
+                {
+                    connection.Open();
+                }
+                string query = Query;
+                cmd = new MySqlCommand(query, connection);
+                cmd.CommandTimeout = 180;
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+
+            }
+            finally
+            {
+                connection.Close();
+                cmd.Dispose();
+                ds.Dispose();
+                dataAdapter = null;
+            }
+        }
+
+        public bool InsertData(string procedureName, List<KeyValuePair<string, string>> parameterList)
+        {
+            connection = new MySqlConnection(connectionString);
+            DataSet ds = new DataSet();
+            MySqlCommand cmd = new MySqlCommand();
+            try
+            {
+                if (connection.State == 0)
+                {
+                    connection.Open();
+                }
+                cmd.Connection = connection;
+                cmd.CommandText = procedureName;
+                cmd.CommandType = CommandType.StoredProcedure;
+                foreach (KeyValuePair<string, string> keyValuePair in parameterList)
+                {
+                    cmd.Parameters.AddWithValue(keyValuePair.Key, keyValuePair.Value);
+                }
+                cmd.ExecuteNonQuery();
+                //  AuditLog.WriteError(affected.ToString());
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+
+            }
+            finally
+            {
+                connection.Close();
+                cmd.Dispose();
+                ds.Dispose();
+                dataAdapter = null;
+            }
+        }
+
 
     }
 }

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace WebApplication1
 {
@@ -40,10 +33,8 @@ namespace WebApplication1
                 app.UseHsts();
             }
             app.UseCors(options =>
-           options.WithOrigins("http://localhost:4200", "http://180.179.49.72:8083", "http://180.179.49.72:80", "http://180.179.49.72", "http://hms.testandverification.com/ems-app", "http://hms.testandverification.com/hms-app", "http://tncsc-scm.in", "http://localhost:443", "https://tncsc-scm.in:443", "https://www.tncsc-scm.in", "http://180.179.49.72:8085", "https://www.master.tncsc-scm.in", "https://master.tncsc-scm.in", "http://localhost:4100", "http://180.179.49.72:8081")
-
-        // options.WithOrigins("http://localhost:4200")
-         .AllowAnyMethod()
+           options.WithOrigins("http://localhost:4200", "https://localhost:4200", "http://180.179.49.72:8083", "http://180.179.49.72:80", "http://180.179.49.72", "http://hms.testandverification.com/ems-app", "http://hms.testandverification.com/hms-app", "http://tncsc-scm.in", "http://localhost:443", "https://tncsc-scm.in:443", "https://www.tncsc-scm.in", "http://180.179.49.72:8085", "http://localhost:4100", "http://180.179.49.72:8081", "http://hms.cctv.tasmac.co.in/hms-app", "http://hms.cctv.tasmac.co.in/ems-app", "https://hms.cctv.tasmac.co.in/hms-app", "https://hms.cctv.tasmac.co.in/ems-app", "http://hms.cctv.tasmac.co.in", "https://hms.cctv.tasmac.co.in")
+           .AllowAnyMethod()
          .AllowAnyHeader()
          .AllowCredentials()
          );

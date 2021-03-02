@@ -25,6 +25,7 @@ namespace WebApplication1.Controllers
                 sqlParameters.Add(new KeyValuePair<string, string>("@username", username));
                 ds = sqlConnection.GetDataSetValues("GetLoginDetails", sqlParameters);
                 return JsonConvert.SerializeObject(ds.Tables[0]);
+                //return "Dulasi success";
             }
             finally
             {

@@ -14,14 +14,12 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IncidentDetailsController : ControllerBase
+    public class InsertCameraStatusController : ControllerBase
     {
-        MySqlCommand cmd = new MySqlCommand();
-
         [HttpPost("{id}")]
-        public Tuple<bool, string> Post(IncidentEntity entity)
+        public Tuple<bool, string> Post(CameraStatusEntity entity)
         {
-            //  ManageSQLConnection sqlConnection = new ManageSQLConnection();
+            MySqlCommand cmd = new MySqlCommand();
             MySqlConnection sqlConnection = new MySqlConnection();
             MySqlTransaction objTrans = null;
             string connectionString = GlobalVariables.ConnectionString;
@@ -39,15 +37,17 @@ namespace WebApplication1.Controllers
                     objTrans = sqlConnection.BeginTransaction();
                     cmd.Transaction = objTrans;
                     cmd.Connection = sqlConnection;
-                    cmd.CommandText = "InsertIncidentDetails";
+                    cmd.CommandText = "InsertCameraLiveDetails";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@rcode", entity.RCode);
-                    cmd.Parameters.AddWithValue("@dcode", entity.DCode);
-                    cmd.Parameters.AddWithValue("@shopcode", entity.ShopCode);
-                    cmd.Parameters.AddWithValue("@doc_date", entity.DocDate);
-                    cmd.Parameters.AddWithValue("@reason", entity.Reason);
-                    cmd.Parameters.AddWithValue("@url_path", entity.URL);
-                    cmd.Parameters.AddWithValue("@remarks", entity.Remarks);
+                    cmd.Parameters.AddWithValue("@Id", entity.Id);
+                    cmd.Parameters.AddWithValue("@RCode", entity.RCode);
+                    cmd.Parameters.AddWithValue("@DCode", entity.DCode);
+                    cmd.Parameters.AddWithValue("@isActive", entity.isActive);
+                    cmd.Parameters.AddWithValue("@StartDate", entity.StartDate);
+                    cmd.Parameters.AddWithValue("@Remarks", entity.Remarks);
+                    cmd.Parameters.AddWithValue("@Hours", entity.Hours);
+                    cmd.Parameters.AddWithValue("@EndDate", entity.EndDate);
+                    cmd.Parameters.AddWithValue("@ShopNo", entity.ShopNo);
                     cmd.ExecuteNonQuery();
                     objTrans.Commit();
                     cmd.Parameters.Clear();
@@ -70,25 +70,15 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{id}")]
-        public string Get(string FDate, string TDate, string RCode, string DCode, int type)
+        public string Get(string DCode)
         {
-            ManageSQLConnection sqlConnection = new ManageSQLConnection();
+            ManageSQLConnection manageSqlConnection = new ManageSQLConnection();
             DataSet ds = new DataSet();
             try
             {
-                if (type == 1)
-                {
-                    ds = sqlConnection.GetDataSetValues("GetAllIncidentDetails");
-                }
-                else
-                {
-                    List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
-                    sqlParameters.Add(new KeyValuePair<string, string>("@FDate", FDate));
-                    sqlParameters.Add(new KeyValuePair<string, string>("@TDate", TDate));
-                    sqlParameters.Add(new KeyValuePair<string, string>("@RCode", RCode));
-                    sqlParameters.Add(new KeyValuePair<string, string>("@DCode", DCode));
-                    ds = sqlConnection.GetDataSetValues("GetIncidentDetails", sqlParameters);
-                }
+                List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
+                sqlParameters.Add(new KeyValuePair<string, string>("@DCode", DCode));
+                ds = manageSqlConnection.GetDataSetValues("GetCameraStatusDetails", sqlParameters);
                 return JsonConvert.SerializeObject(ds.Tables[0]);
             }
             finally

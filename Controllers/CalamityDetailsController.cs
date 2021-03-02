@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using WebApplication1.Mail;
 using WebApplication1.Models;
 using WebApplication1.SQLConnection;
 
@@ -14,14 +15,12 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IncidentDetailsController : ControllerBase
+    public class CalamityDetailsController : ControllerBase
     {
-        MySqlCommand cmd = new MySqlCommand();
-
         [HttpPost("{id}")]
-        public Tuple<bool, string> Post(IncidentEntity entity)
+        public Tuple<bool, string> Post(TheftEntity entity)
         {
-            //  ManageSQLConnection sqlConnection = new ManageSQLConnection();
+            MySqlCommand cmd = new MySqlCommand();
             MySqlConnection sqlConnection = new MySqlConnection();
             MySqlTransaction objTrans = null;
             string connectionString = GlobalVariables.ConnectionString;
@@ -39,19 +38,27 @@ namespace WebApplication1.Controllers
                     objTrans = sqlConnection.BeginTransaction();
                     cmd.Transaction = objTrans;
                     cmd.Connection = sqlConnection;
-                    cmd.CommandText = "InsertIncidentDetails";
+                    cmd.CommandText = "InsertCalamityDetails";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@rcode", entity.RCode);
-                    cmd.Parameters.AddWithValue("@dcode", entity.DCode);
-                    cmd.Parameters.AddWithValue("@shopcode", entity.ShopCode);
-                    cmd.Parameters.AddWithValue("@doc_date", entity.DocDate);
-                    cmd.Parameters.AddWithValue("@reason", entity.Reason);
-                    cmd.Parameters.AddWithValue("@url_path", entity.URL);
-                    cmd.Parameters.AddWithValue("@remarks", entity.Remarks);
+                    cmd.Parameters.AddWithValue("@Id", entity.Id);
+                    cmd.Parameters.AddWithValue("@Location", entity.Location);
+                    cmd.Parameters.AddWithValue("@Rcode", entity.Rcode);
+                    cmd.Parameters.AddWithValue("@Dcode", entity.Dcode);
+                    cmd.Parameters.AddWithValue("@Status", entity.Status);
+                    cmd.Parameters.AddWithValue("@Shopcode", entity.ShopCode);
+                    cmd.Parameters.AddWithValue("@Reason", entity.Reason);
+                    cmd.Parameters.AddWithValue("@IssueType", entity.IssueType);
+                    cmd.Parameters.AddWithValue("@Address", entity.Address);
+                    cmd.Parameters.AddWithValue("@VideoURL", entity.VideoURL);
+                    cmd.Parameters.AddWithValue("@ImageURL", entity.ImageURL);
+                    cmd.Parameters.AddWithValue("@DocDate", entity.DocDate);
+                    cmd.Parameters.AddWithValue("@CompletedDate", entity.CompletedDate);
                     cmd.ExecuteNonQuery();
                     objTrans.Commit();
                     cmd.Parameters.Clear();
                     cmd.Dispose();
+                    MailSending mail = new MailSending();
+                    mail.SendMailForIncident(entity, "Natural Calamities ");
                     return new Tuple<bool, string>(true, JsonConvert.SerializeObject(ds));
                 }
                 catch (Exception ex)
@@ -70,25 +77,16 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("{id}")]
-        public string Get(string FDate, string TDate, string RCode, string DCode, int type)
+        public string Get(string FDate, string TDate)
         {
-            ManageSQLConnection sqlConnection = new ManageSQLConnection();
+            ManageSQLConnection manageSqlConnection = new ManageSQLConnection();
             DataSet ds = new DataSet();
             try
             {
-                if (type == 1)
-                {
-                    ds = sqlConnection.GetDataSetValues("GetAllIncidentDetails");
-                }
-                else
-                {
-                    List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
-                    sqlParameters.Add(new KeyValuePair<string, string>("@FDate", FDate));
-                    sqlParameters.Add(new KeyValuePair<string, string>("@TDate", TDate));
-                    sqlParameters.Add(new KeyValuePair<string, string>("@RCode", RCode));
-                    sqlParameters.Add(new KeyValuePair<string, string>("@DCode", DCode));
-                    ds = sqlConnection.GetDataSetValues("GetIncidentDetails", sqlParameters);
-                }
+                List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
+                sqlParameters.Add(new KeyValuePair<string, string>("@FDate", FDate));
+                sqlParameters.Add(new KeyValuePair<string, string>("@TDate", TDate));
+                ds = manageSqlConnection.GetDataSetValues("GetCalamityDetails", sqlParameters);
                 return JsonConvert.SerializeObject(ds.Tables[0]);
             }
             finally

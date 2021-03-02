@@ -16,6 +16,7 @@ namespace WebApplication1.Models
         public string Ticketstatus { get; set; }
         public string short_desc { get; set; }
         public int product { get; set; }
+        public string UserId { get; set; }
         public string reporter { get; set; }
         public int component_id { get; set; }
         public bool everconfirmed { get; set; }
@@ -24,6 +25,7 @@ namespace WebApplication1.Models
         public string URL { get; set; }
         public string CC { get; set; }
         public int ticket_id { get; set; }
+        public int StatusCode { get; set; }
         public BodyMessageEntity bodyMessage { get; set; }
 
     }
@@ -34,6 +36,8 @@ namespace WebApplication1.Models
         public string reporter { get; set; }
         public string ticketdescription { get; set; }
         public string Status { get; set; }
+        public string StatusCode { get; set; }
+        public int UserId { get; set; }
     }
 
     public class NMSEntity

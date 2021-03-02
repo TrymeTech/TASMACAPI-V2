@@ -49,6 +49,8 @@ namespace WebApplication1.Controllers
                     cmd.Parameters.AddWithValue("@reporter", ticketEntity.reporter);
                     cmd.Parameters.AddWithValue("@component_id", ticketEntity.component_id);
                     //  cmd.Parameters.AddWithValue("@URL", ticketEntity.URL);
+                    cmd.Parameters.AddWithValue("@status_code", (ticketEntity.StatusCode).ToString());
+                    cmd.Parameters.AddWithValue("@userid", ticketEntity.UserId);
                     cmd.Parameters.AddWithValue("@CC", ticketEntity.CC);
                     cmd.Parameters.AddWithValue("@everconfirmed", ticketEntity.everconfirmed);
                     cmd.Parameters.AddWithValue("@reporter_accessible", ticketEntity.reporter_accessible);
@@ -68,8 +70,8 @@ namespace WebApplication1.Controllers
                     {
                         FromMailid = GlobalVariables.FromMailid,
                         FromPassword = GlobalVariables.Password,
-                        ToMailid = ticketEntity.assingedTo,
-                        ToCC = ticketEntity.CC,
+                        ToMailid =  ticketEntity.assingedTo,
+                        ToCC = ticketEntity.bodyMessage.TOCC,
                         Port = GlobalVariables.Port,
                         Subject = ticketEntity.short_desc,
                         BodyMessage = mailSending.BodyMessage(ticketEntity.bodyMessage, insertedID),
@@ -137,7 +139,8 @@ namespace WebApplication1.Controllers
             sqlParameters.Add(new KeyValuePair<string, string>("@assingedTo", (entity.assingedTo).ToString()));
             sqlParameters.Add(new KeyValuePair<string, string>("@Ticketstatus", entity.Ticketstatus));
             sqlParameters.Add(new KeyValuePair<string, string>("@short_desc", entity.short_desc));
-           // sqlParameters.Add(new KeyValuePair<string, string>("@URL", entity.URL));
+            // sqlParameters.Add(new KeyValuePair<string, string>("@URL", entity.URL));
+            sqlParameters.Add(new KeyValuePair<string, string>("@StatusCode", (entity.StatusCode).ToString()));
             sqlParameters.Add(new KeyValuePair<string, string>("@CC", entity.CC));
            var result=  manageSQLConnection.UpdateValues("UpdateTickets", sqlParameters);
 
@@ -148,7 +151,7 @@ namespace WebApplication1.Controllers
                 FromMailid = GlobalVariables.FromMailid,
                 FromPassword = GlobalVariables.Password,
                 ToMailid = entity.assingedTo,
-                ToCC = entity.CC,
+                ToCC = entity.bodyMessage.TOCC,
                 Port = GlobalVariables.Port,
                 Subject = entity.short_desc,
                 BodyMessage = mailSending.BodyMessage(entity.bodyMessage, entity.ticket_id),

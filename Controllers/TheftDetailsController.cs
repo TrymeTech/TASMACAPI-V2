@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using WebApplication1.Mail;
 using WebApplication1.Models;
+using WebApplication1.SQLConnection;
 
 namespace WebApplication1.Controllers
 {
@@ -38,6 +40,8 @@ namespace WebApplication1.Controllers
                     cmd.Connection = sqlConnection;
                     cmd.CommandText = "InsertTheftDetails";
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id", entity.Id);
+                    cmd.Parameters.AddWithValue("@Location", entity.Location);
                     cmd.Parameters.AddWithValue("@Rcode", entity.Rcode);
                     cmd.Parameters.AddWithValue("@Dcode", entity.Dcode);
                     cmd.Parameters.AddWithValue("@Status", entity.Status);
@@ -45,13 +49,18 @@ namespace WebApplication1.Controllers
                     cmd.Parameters.AddWithValue("@Reason", entity.Reason);
                     cmd.Parameters.AddWithValue("@IssueType", entity.IssueType);
                     cmd.Parameters.AddWithValue("@Address", entity.Address);
-                    cmd.Parameters.AddWithValue("@URL", entity.URL);
+                    cmd.Parameters.AddWithValue("@URL", entity.VideoURL);
+                    cmd.Parameters.AddWithValue("@ImageURL", entity.ImageURL);
                     cmd.Parameters.AddWithValue("@DocDate", entity.DocDate);
                     cmd.Parameters.AddWithValue("@CompletedDate", entity.CompletedDate);
                     cmd.ExecuteNonQuery();
                     objTrans.Commit();
                     cmd.Parameters.Clear();
                     cmd.Dispose();
+
+                    //Mail sending
+                    MailSending mail = new MailSending();
+                    mail.SendMailForIncident(entity,"Theft");
                     return new Tuple<bool, string>(true, JsonConvert.SerializeObject(ds));
                 }
                 catch (Exception ex)
@@ -68,5 +77,25 @@ namespace WebApplication1.Controllers
                 }
             }
         }
+
+        [HttpGet("{id}")]
+        public string Get(string FDate, string TDate)
+        {
+            ManageSQLConnection manageSqlConnection = new ManageSQLConnection();
+            DataSet ds = new DataSet();
+            try
+            {
+                List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
+                sqlParameters.Add(new KeyValuePair<string, string>("@FDate", FDate));
+                sqlParameters.Add(new KeyValuePair<string, string>("@TDate", TDate));
+                ds = manageSqlConnection.GetDataSetValues("GetTheftDetails", sqlParameters);
+                return JsonConvert.SerializeObject(ds.Tables[0]);
+            }
+            finally
+            {
+                ds.Dispose();
+            }
+        }
+
     }
 }

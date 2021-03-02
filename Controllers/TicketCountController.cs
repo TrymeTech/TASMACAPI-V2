@@ -23,7 +23,11 @@ namespace WebApplication1.Controllers
             {
                 List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
                 sqlParameters.Add(new KeyValuePair<string, string>("@userId", userId));
-                ds = sqlConnection.GetDataSetValues("GetTicketsCount", sqlParameters);
+                string query = "SELECT  COUNT(ticket_id) AS total_bugs  FROM tickets ;" +
+                                " SELECT COUNT(ticket_id) AS user_bugs FROM tickets WHERE userid = '"+userId+"';"+
+                                " SELECT product_id, COUNT(ticket_id) AS product_bugs FROM tickets GROUP BY product_id;";
+
+                ds = sqlConnection.GetDataSetValuesFromQuery(query);
                 return JsonConvert.SerializeObject(ds.Tables);
             }
             finally

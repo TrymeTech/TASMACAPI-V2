@@ -10,8 +10,8 @@ namespace WebApplication1
         //Dev setting
         public const string ConnectionString = "Server=127.0.0.1;Database=tncscbug;Uid=root;Pwd=54321;";
 
-        //Live Settings
-       // public const string ConnectionString = "Server=127.0.0.1;Database=tasmacbug;Uid=tasmacbug;Pwd=Test1234$;";
+        //Live Settings 127.0.0.1 125.17.108.118
+       // public const string ConnectionString = "Server=127.0.01;Database=tasmac;Uid=tasmacbugnew;Pwd=Test1234$;";
 
         //Mail settings
         public const string FromMailid = "tasmaccctv@gmail.com"; //"si.bontonsoftwares@gmail.com";
