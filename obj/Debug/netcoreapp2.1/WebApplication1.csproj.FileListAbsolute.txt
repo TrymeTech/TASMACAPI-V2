@@ -25,3 +25,55 @@ C:\LocalRepository\EMS\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\W
 C:\LocalRepository\EMS\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\WebApplication1.RazorTargetAssemblyInfo.cache
 C:\LocalRepository\EMS\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\WebApplication1.dll
 C:\LocalRepository\EMS\WebApplication1\WebApplication1\obj\Debug\netcoreapp2.1\WebApplication1.pdb
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.deps.json
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.runtimeconfig.json
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.runtimeconfig.dev.json
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.dll
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.pdb
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.csprojAssemblyReference.cache
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.csproj.CoreCompileInputs.cache
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.RazorAssemblyInfo.cache
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.RazorAssemblyInfo.cs
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.AssemblyInfoInputs.cache
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.AssemblyInfo.cs
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.RazorTargetAssemblyInfo.cache
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.dll
+C:\LocalRepository\EMS\WebAPI\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.pdb
+D:\TASMACAPI\bin\Debug\netcoreapp2.1\web.config
+D:\TASMACAPI\bin\Debug\netcoreapp2.1\appsettings.Development.json
+D:\TASMACAPI\bin\Debug\netcoreapp2.1\appsettings.json
+D:\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.deps.json
+D:\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.runtimeconfig.json
+D:\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.runtimeconfig.dev.json
+D:\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.dll
+D:\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.pdb
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.csproj.AssemblyReference.cache
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.GeneratedMSBuildEditorConfig.editorconfig
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.AssemblyInfoInputs.cache
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.AssemblyInfo.cs
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.csproj.CoreCompileInputs.cache
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.RazorAssemblyInfo.cache
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.RazorAssemblyInfo.cs
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.RazorTargetAssemblyInfo.cache
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.dll
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.pdb
+D:\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.genruntimeconfig.cache
+E:\Angular Projects\TASMACAPI\bin\Debug\netcoreapp2.1\web.config
+E:\Angular Projects\TASMACAPI\bin\Debug\netcoreapp2.1\appsettings.Development.json
+E:\Angular Projects\TASMACAPI\bin\Debug\netcoreapp2.1\appsettings.json
+E:\Angular Projects\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.deps.json
+E:\Angular Projects\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.runtimeconfig.json
+E:\Angular Projects\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.runtimeconfig.dev.json
+E:\Angular Projects\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.dll
+E:\Angular Projects\TASMACAPI\bin\Debug\netcoreapp2.1\WebApplication1.pdb
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.csproj.AssemblyReference.cache
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.GeneratedMSBuildEditorConfig.editorconfig
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.AssemblyInfoInputs.cache
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.AssemblyInfo.cs
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.csproj.CoreCompileInputs.cache
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.RazorAssemblyInfo.cache
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.RazorAssemblyInfo.cs
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.RazorTargetAssemblyInfo.cache
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.dll
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.pdb
+E:\Angular Projects\TASMACAPI\obj\Debug\netcoreapp2.1\WebApplication1.genruntimeconfig.cache

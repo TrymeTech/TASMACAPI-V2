@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Data;
 using WebApplication1.SQLConnection;
 
 namespace WebApplication1.Controllers
@@ -30,5 +25,13 @@ namespace WebApplication1.Controllers
                 ds.Dispose();
             }
         }
+       
+    }
+    public class RegionMasterEntity
+    {
+        public string regioncode { get; set; }
+        public string regionname { get; set; }
+        public string address { get; set; }
+
     }
 }

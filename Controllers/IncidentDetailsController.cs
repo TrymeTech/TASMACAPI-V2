@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data;
 using WebApplication1.Models;
 using WebApplication1.SQLConnection;
 
@@ -89,7 +86,9 @@ namespace WebApplication1.Controllers
                     sqlParameters.Add(new KeyValuePair<string, string>("@DCode", DCode));
                     ds = sqlConnection.GetDataSetValues("GetIncidentDetails", sqlParameters);
                 }
-                return JsonConvert.SerializeObject(ds.Tables[0]);
+                var table = (type == 1) ? JsonConvert.SerializeObject(ds) :
+                   JsonConvert.SerializeObject(ds.Tables[0]);
+                return table;
             }
             finally
             {

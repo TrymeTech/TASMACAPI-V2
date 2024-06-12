@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Net;
 using System.Net.Mail;
 using WebApplication1.Models;
+using WebApplication1.SQLConnection;
 
 namespace WebApplication1.Mail
 {
@@ -10,6 +13,7 @@ namespace WebApplication1.Mail
         public bool Send(MailEntity mailEntity)
         {
             bool isSend = false;
+            string CCMailId = string.Empty;
             try
             {
                 MailMessage message = new MailMessage();
@@ -21,25 +25,36 @@ namespace WebApplication1.Mail
                 {
                     message.To.Add(new MailAddress(ToEMailId)); //adding multiple TO Email Id
                 }
-                message.To.Add(new MailAddress("dulasimca@gmail.com"));
-
                 if (!string.IsNullOrEmpty(mailEntity.ToCC) && mailEntity.ToCC != null)
                 {
                     string[] ToMuliCC = mailEntity.ToCC.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string CCEMailId in ToMuliCC)
                     {
+                        if (!string.IsNullOrEmpty(CCEMailId) && CCEMailId != null && CCEMailId.Contains("@"))
+                        {
+                            message.CC.Add(new MailAddress(CCEMailId)); //adding multiple CC Email Id
+                        }
+                    }
+                }
+
+                CCMailId = GetToCCMailid();
+                if (!string.IsNullOrEmpty(CCMailId) && CCMailId != null)
+                {
+                    string[] ToMuliCC = CCMailId.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string CCEMailId in ToMuliCC)
+                    {
                         message.CC.Add(new MailAddress(CCEMailId)); //adding multiple CC Email Id
                     }
                 }
-                //Add multiple CC
                 message.Subject = mailEntity.Subject;
                 message.IsBodyHtml = true; //to make message body as html  
                 message.Body = mailEntity.BodyMessage;
                 smtp.Port = mailEntity.Port;
                 smtp.Host = mailEntity.SMTP; //for gmail host  
-                smtp.UseDefaultCredentials = true;
+                smtp.UseDefaultCredentials = false;
+                smtp.Timeout = 200000;
                 smtp.Credentials = new NetworkCredential(mailEntity.FromMailid, mailEntity.FromPassword);
-                smtp.EnableSsl = true;
+                smtp.EnableSsl = false;
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.Send(message);
                 isSend = true;
@@ -51,7 +66,36 @@ namespace WebApplication1.Mail
             }
             return isSend;
         }
-        public string BodyMessage(BodyMessageEntity bodyMessageEntity, int Id)
+
+        public string GetToCCMailid()
+        {
+            string toMailid = string.Empty;
+            try
+            {
+
+                List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
+                sqlParameters.Add(new KeyValuePair<string, string>("@mailtypes", "5"));
+                ManageSQLConnection sqlConnection = new ManageSQLConnection();
+                DataSet ds = new DataSet();
+                ds = sqlConnection.GetDataSetValues("Getmailsettings", sqlParameters);
+                if (ds.Tables.Count > 0)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        toMailid = Convert.ToString(ds.Tables[0].Rows[0]["ccmailid"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AuditLog.WriteError("GetToCCMailid " + ex.Message);
+            }
+
+
+            return toMailid;
+        }
+
+        public string BodyMessage(BodyMessageEntity bodyMessageEntity, int Id, string Assignee)
         {
             string messageBody = string.Empty, htmlTableStart = string.Empty, htmlTableEnd = string.Empty,
                htmlHeadertdStart = string.Empty, htmlHeadertdEnd = string.Empty, htmlTrStart = string.Empty,
@@ -99,7 +143,7 @@ namespace WebApplication1.Mail
 
                 messageBody += htmlTrStart + htmlHeadertdStart + "Assignee" + htmlHeadertdEnd
                     + htmlTdStart + ":" + htmlTdEnd
-                    + htmlTdStart + bodyMessageEntity.Assignee + htmlTdEnd + htmlTrEnd;
+                    + htmlTdStart + Assignee + htmlTdEnd + htmlTrEnd;
 
                 messageBody += htmlTrStart + htmlHeadertdStart + "Status" + htmlHeadertdEnd
                     + htmlTdStart + ":" + htmlTdEnd
@@ -145,7 +189,7 @@ namespace WebApplication1.Mail
                 {
                     message.To.Add(new MailAddress(ToEMailId)); //adding multiple TO Email Id
                 }
-                message.To.Add(new MailAddress("dulasimca@gmail.com"));
+                //message.To.Add(new MailAddress("dulasimca@gmail.com"));
 
                 if (!string.IsNullOrEmpty(mailEntity.ToCC) && mailEntity.ToCC != null)
                 {
@@ -177,25 +221,42 @@ namespace WebApplication1.Mail
             return isSend;
         }
 
-        public void SendMailForIncident(TheftEntity entity, string _subject)
+        public void SendMailForIncident(TheftEntity entity, int type = 0)
         {
             try
             {
-                CommonEntity common = new CommonEntity
+                if (type != 0)
                 {
-                    ToMailid = "rajaram@bontonsoftwares.com",
-                    ToCC = "starpp@gmail.com ",
-                    Subject = _subject + " Information",
-                    BodyMessage = "Hi Rajaram, <br/> Reason :" + entity.Reason + " <br/>"
-                       + "Address = " + entity.Address + "<br/>"
-                       + "Issues Type = " + entity.IssueType + "<br/>"
-                       + "Shop Code = " + entity.ShopCode + "<br/>"
-                       + "Incident Date = " + entity.Dcode + "<br/><br/>"
-                       + "Regards" + "<br/>"
-                       + "SI Team"
 
-                };
-                SendForAll(common);
+                    //Get the mailid from tables.
+                    List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
+                    sqlParameters.Add(new KeyValuePair<string, string>("@mailtypes", type.ToString()));
+                    ManageSQLConnection sqlConnection = new ManageSQLConnection();
+                    DataSet ds = new DataSet();
+                    ds = sqlConnection.GetDataSetValues("Getmailsettings", sqlParameters);
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            CommonEntity common = new CommonEntity
+                            {
+
+                                ToMailid = Convert.ToString(ds.Tables[0].Rows[0]["tomailid"]),
+                                ToCC = Convert.ToString(ds.Tables[0].Rows[0]["ccmailid"]),
+                                Subject = Convert.ToString(ds.Tables[0].Rows[0]["subjects"]),
+                                BodyMessage = "Hi Rajaram, <br/> Reason :" + entity.Reason + " <br/>"
+                           + "Address = " + entity.Address + "<br/>"
+                           + "Issues Type = " + entity.IssueType + "<br/>"
+                           + "Shop Code = " + entity.ShopCode + "<br/>"
+                           + "Incident Date = " + entity.DocDate + "<br/><br/>"
+                           + "Regards" + "<br/>"
+                           + "SI Team"
+
+                            };
+                            SendForAll(common);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -203,7 +264,54 @@ namespace WebApplication1.Mail
             }
 
         }
+
+
+        public void SendMailForQuotation(QuotationEntity entity, int type = 0)
+        {
+            try
+            {
+                if (type != 0)
+                {
+
+                    //Get the mailid from tables.
+                    List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
+                    sqlParameters.Add(new KeyValuePair<string, string>("@mailtypes", type.ToString()));
+                    ManageSQLConnection sqlConnection = new ManageSQLConnection();
+                    DataSet ds = new DataSet();
+                    ds = sqlConnection.GetDataSetValues("Getmailsettings", sqlParameters);
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            CommonEntity common = new CommonEntity
+                            {
+
+                                ToMailid = Convert.ToString(ds.Tables[0].Rows[0]["tomailid"]),
+                                ToCC = Convert.ToString(ds.Tables[0].Rows[0]["ccmailid"]),
+                                Subject = Convert.ToString(ds.Tables[0].Rows[0]["subjects"]),
+                                BodyMessage = "Hi Rajaram, <br/> Reason :" + entity.Remarks + " <br/>"
+                           + "Address = " + entity.Address + "<br/>"
+                           + "Issues Type = " + entity.ComponentId + "<br/>"
+                           + "Shop Code = " + entity.ShopNumber + "<br/>"
+                           + "Quotation Request Date = " + DateTime.Now + "<br/><br/>"
+                           + "Regards" + "<br/>"
+                           + "SI Team"
+
+                            };
+                            SendForAll(common);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AuditLog.WriteError(ex.Message);
+            }
+
+
+        }
     }
+
     public class MailEntity
     {
         public string FromMailid { get; set; }

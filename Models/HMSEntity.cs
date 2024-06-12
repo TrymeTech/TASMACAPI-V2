@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace WebApplication1.Models
+﻿namespace WebApplication1.Models
 {
     public class RelocationEntity
     {
@@ -19,6 +14,8 @@ namespace WebApplication1.Models
         public string DocDate { get; set; }
         public string CompletedDate { get; set; }
         public string NewShopNo { get; set; }
+        public string RegionName { get; set; }
+        public string DistrictName { get; set; }
     }
 
     public class TheftEntity
@@ -49,6 +46,20 @@ namespace WebApplication1.Models
         public string isActive { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
+        public string CreatedDate { get; set; }
+    }
+
+    public class QuotationEntity
+    {
+        public string Id { get; set; }
+        public string RCode { get; set; }
+        public string DCode { get; set; }
+        public string ShopNumber { get; set; }
+        public string Remarks { get; set; }
+        public string LocationId { get; set; }
+        public string Address { get; set; }
+        public string ComponentId { get; set; }
+        public string StatusCode { get; set; }
         public string CreatedDate { get; set; }
     }
 }

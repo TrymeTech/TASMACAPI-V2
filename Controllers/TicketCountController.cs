@@ -1,11 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using WebApplication1.SQLConnection;
 
 namespace WebApplication1.Controllers
@@ -24,7 +20,7 @@ namespace WebApplication1.Controllers
                 List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
                 sqlParameters.Add(new KeyValuePair<string, string>("@userId", userId));
                 string query = "SELECT  COUNT(ticket_id) AS total_bugs  FROM tickets ;" +
-                                " SELECT COUNT(ticket_id) AS user_bugs FROM tickets WHERE userid = '"+userId+"';"+
+                                " SELECT COUNT(ticket_id) AS user_bugs FROM tickets WHERE userid = '" + userId + "';" +
                                 " SELECT product_id, COUNT(ticket_id) AS product_bugs FROM tickets GROUP BY product_id;";
 
                 ds = sqlConnection.GetDataSetValuesFromQuery(query);

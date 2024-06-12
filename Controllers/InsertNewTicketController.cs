@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using WebApplication1.Mail;
 using WebApplication1.Models;
 using WebApplication1.SQLConnection;
@@ -70,14 +71,14 @@ namespace WebApplication1.Controllers
                     {
                         FromMailid = GlobalVariables.FromMailid,
                         FromPassword = GlobalVariables.Password,
-                        ToMailid =  ticketEntity.assingedTo,
+                        ToMailid = ticketEntity.assingedTo,
                         ToCC = ticketEntity.bodyMessage.TOCC,
                         Port = GlobalVariables.Port,
                         Subject = ticketEntity.short_desc,
-                        BodyMessage = mailSending.BodyMessage(ticketEntity.bodyMessage, insertedID),
+                        BodyMessage = mailSending.BodyMessage(ticketEntity.bodyMessage, insertedID, ticketEntity.assingedTo),
                         SMTP = GlobalVariables.Host
                     };
-                    mailSending.Send(mailEntity);
+                    Task.Run(() => mailSending.Send(mailEntity));
                     return new Tuple<bool, string, string>(true, JsonConvert.SerializeObject(ds), insertID);
                 }
                 catch (Exception ex)
@@ -142,7 +143,21 @@ namespace WebApplication1.Controllers
             // sqlParameters.Add(new KeyValuePair<string, string>("@URL", entity.URL));
             sqlParameters.Add(new KeyValuePair<string, string>("@StatusCode", (entity.StatusCode).ToString()));
             sqlParameters.Add(new KeyValuePair<string, string>("@CC", entity.CC));
-           var result=  manageSQLConnection.UpdateValues("UpdateTickets", sqlParameters);
+            var result = manageSQLConnection.UpdateValues("UpdateTickets", sqlParameters);
+
+            string ToMailId = string.Empty;
+            //Need to get the reporting person mailid ;
+            List<KeyValuePair<string, string>> sqlParameters1 = new List<KeyValuePair<string, string>>();
+            sqlParameters1.Add(new KeyValuePair<string, string>("@TICKETID", (entity.ticket_id).ToString()));
+            var result1 = manageSQLConnection.GetDataSetValues("GetAllTicketsById", sqlParameters1);
+            ToMailId = entity.assingedTo;
+            if (result1.Tables.Count > 0)
+            {
+                if (result1.Tables[0].Rows.Count > 0)
+                {
+                    ToMailId += result1.Tables[0].Rows[0]["reporter"].ToString();
+                }
+            }
 
             MailSending mailSending = new MailSending();
             //Mail sending
@@ -150,14 +165,14 @@ namespace WebApplication1.Controllers
             {
                 FromMailid = GlobalVariables.FromMailid,
                 FromPassword = GlobalVariables.Password,
-                ToMailid = entity.assingedTo,
+                ToMailid = ToMailId,
                 ToCC = entity.bodyMessage.TOCC,
                 Port = GlobalVariables.Port,
                 Subject = entity.short_desc,
-                BodyMessage = mailSending.BodyMessage(entity.bodyMessage, entity.ticket_id),
+                BodyMessage = mailSending.BodyMessage(entity.bodyMessage, entity.ticket_id, entity.assingedTo),
                 SMTP = GlobalVariables.Host
             };
-            mailSending.Send(mailEntity);
+            Task.Run(() => mailSending.Send(mailEntity));
 
             return result;
         }

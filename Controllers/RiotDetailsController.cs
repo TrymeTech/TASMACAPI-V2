@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data;
 using WebApplication1.Mail;
 using WebApplication1.Models;
 using WebApplication1.SQLConnection;
@@ -58,7 +55,7 @@ namespace WebApplication1.Controllers
                     cmd.Parameters.Clear();
                     cmd.Dispose();
                     MailSending mail = new MailSending();
-                    mail.SendMailForIncident(entity, "Riots");
+                    mail.SendMailForIncident(entity, 3);
                     return new Tuple<bool, string>(true, JsonConvert.SerializeObject(ds));
                 }
                 catch (Exception ex)

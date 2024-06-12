@@ -31,7 +31,7 @@ namespace WebApplication1.Controllers
                 sqlParameters.Add(new KeyValuePair<string, string>("@RMPhone", entity.RMPhone));
                 sqlParameters.Add(new KeyValuePair<string, string>("@RMDistrict", entity.RMDistrict));
                 sqlParameters.Add(new KeyValuePair<string, string>("@RMEmailId", entity.RMEmailId));
-                var result= manageSQL.InsertData("InsertUserProfile", sqlParameters);
+                var result = manageSQL.InsertData("InsertUserProfile", sqlParameters);
                 return new Tuple<bool, string>(result, "Saved Successfully");
 
             }

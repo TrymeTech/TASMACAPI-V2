@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApplication1.SQLConnection
 {
@@ -99,7 +97,7 @@ namespace WebApplication1.SQLConnection
                 {
                     cmd.Parameters.AddWithValue(keyValuePair.Key, keyValuePair.Value);
                 }
-                cmd.CommandTimeout = 180;
+                cmd.CommandTimeout = 1800;
                 dataAdapter = new MySqlDataAdapter(cmd);
                 dataAdapter.Fill(ds);
                 return ds;

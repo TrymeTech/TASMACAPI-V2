@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Data;
 using WebApplication1.SQLConnection;
 
 namespace WebApplication1.Controllers
@@ -24,7 +19,7 @@ namespace WebApplication1.Controllers
             try
             {
                 ds = sqlConnection.GetDataSetValues(call_procedure);
-                var table = (type == 1) ? JsonConvert.SerializeObject(ds) : 
+                var table = (type == 1) ? JsonConvert.SerializeObject(ds) :
                     JsonConvert.SerializeObject(ds.Tables[0]);
                 return table;
             }

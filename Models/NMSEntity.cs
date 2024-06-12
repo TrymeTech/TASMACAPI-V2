@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApplication1.Mail;
+﻿using WebApplication1.Mail;
 
 namespace WebApplication1.Models
 {

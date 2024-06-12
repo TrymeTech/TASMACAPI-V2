@@ -56,20 +56,35 @@ namespace WebApplication1.Controllers
                     cmd.Dispose();
                     //Mail sending
                     MailSending mail = new MailSending();
-                    CommonEntity common = new CommonEntity
+                    List<KeyValuePair<string, string>> sqlParameters = new List<KeyValuePair<string, string>>();
+                    sqlParameters.Add(new KeyValuePair<string, string>("@mailtypes", "1"));
+                    ManageSQLConnection managesqlConnection = new ManageSQLConnection();
+                    DataSet ds1 = new DataSet();
+                    ds1 = managesqlConnection.GetDataSetValues("Getmailsettings", sqlParameters);
+                    if (ds1.Tables.Count > 0)
                     {
-                        ToMailid = "rajaram@bontonsoftwares.com",
-                        ToCC = "starpp@gmail.com ",
-                        Subject = "Relocaiton request",
-                        BodyMessage = "Hi Rajaram, <br/> Reason :" + entity.Reason + " <br/>"
-                        + "From Address = " + entity.FromAddress + "<br/>"
-                        + "To Address = " + entity.ToAddress +"<br/>"
-                        +"Relocation Date = "+ entity.Dcode + "<br/><br/>"
-                        +"Regards" +"<br/>"
-                        +"SI Team"
+                        if (ds1.Tables[0].Rows.Count > 0)
+                        {
+                            CommonEntity common = new CommonEntity
+                            {
+                                ToMailid = Convert.ToString(ds1.Tables[0].Rows[0]["tomailid"]),
+                                ToCC = Convert.ToString(ds1.Tables[0].Rows[0]["ccmailid"]),
+                                Subject = Convert.ToString(ds1.Tables[0].Rows[0]["subjects"]),
+                                BodyMessage = "Hi Rajaram, <br/> Reason :" + entity.Reason + " <br/>"
+                                    + "Region Name = " + entity.RegionName + "<br/>"
+                                     + "Shop code = " + entity.ShopCode + "<br/>"
+                                      + "New Shop Code = " + entity.NewShopNo + "<br/>"
+                                    + "District Name  = " + entity.DistrictName + "<br/>"
+                                      + "From Address = " + entity.FromAddress + "<br/>"
+                                    + "To Address = " + entity.ToAddress + "<br/>"
+                                    + "Relocation Date = " + entity.DocDate + "<br/><br/>"
+                                    + "Regards" + "<br/>"
+                                    + "SI Team"
 
-                    };
-                    mail.SendForAll(common);
+                            };
+                            mail.SendForAll(common);
+                        }
+                    }
 
                     return new Tuple<bool, string>(true, JsonConvert.SerializeObject(ds));
                 }
